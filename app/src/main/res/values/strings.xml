@@ -2,4 +2,6 @@
     <string name="app_name">GithubSearch</string>
     <string name="retry">Retry</string>
     <string name="no_results">No results for this query</string>
+    <string name="results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="search">Search</string>
 </resources>

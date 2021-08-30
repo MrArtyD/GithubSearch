@@ -9,6 +9,7 @@ interface GithubApi {
         const val BASE_URL = "https://api.github.com/"
     }
 
+
     @GET("search/users")
     suspend fun searchUsers(
         @Query("q") query: String,
