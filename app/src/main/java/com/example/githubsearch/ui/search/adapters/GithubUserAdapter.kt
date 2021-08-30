@@ -10,7 +10,8 @@ import com.example.githubsearch.R
 import com.example.githubsearch.data.items.User
 import com.example.githubsearch.databinding.ItemUserBinding
 
-class GithubUserAdapter : PagingDataAdapter<User, GithubUserAdapter.UserViewHolder>(USER_COMPARATOR) {
+class GithubUserAdapter :
+    PagingDataAdapter<User, GithubUserAdapter.UserViewHolder>(USER_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding =
