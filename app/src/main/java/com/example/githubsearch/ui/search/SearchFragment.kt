@@ -3,8 +3,10 @@ package com.example.githubsearch.ui.search
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import com.example.githubsearch.R
 import com.example.githubsearch.databinding.FragmentSearchBinding
 import com.example.githubsearch.ui.search.adapters.GithubLoadStateAdapter
@@ -39,12 +41,33 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 header = GithubLoadStateAdapter(adapter::retry),
                 footer = GithubLoadStateAdapter(adapter::retry)
             )
-//            rvSearchVariants.setHasFixedSize(true)
-//            rvSearchVariants.adapter = adapter
+
+            btnRetry.setOnClickListener {
+                adapter.retry()
+            }
         }
 
         viewModel.items.observe(viewLifecycleOwner) {
             adapter.submitData(viewLifecycleOwner.lifecycle, it)
+        }
+
+        adapter.addLoadStateListener { loadState ->
+            binding.run {
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                rvSearchResults.isVisible = loadState.source.refresh is LoadState.NotLoading
+                btnRetry.isVisible = loadState.source.refresh is LoadState.Error
+                tvError.isVisible = loadState.source.refresh is LoadState.Error
+
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    adapter.itemCount < 1
+                ) {
+                    rvSearchResults.isVisible = false
+                    tvEmpty.isVisible = true
+                } else {
+                    tvEmpty.isVisible = false
+                }
+            }
         }
 
         setHasOptionsMenu(true)
